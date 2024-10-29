@@ -6,10 +6,15 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+
 #include "generated/TunerConstants.h"
 #include "Telemetry.h"
+#include "Utilities/PathPlannerUtils.h"
 
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
+
+#include <frc/smartdashboard/SendableChooser.h>
+
 
 class RobotContainer {
 private:
@@ -40,4 +45,8 @@ public:
 
 private:
     void ConfigureBindings();
+
+    PathPlannerUtils examplePPUtil;
+    std::vector<pathplanner::PathPlannerAuto> PPautoVect;
+    frc::SendableChooser<int> autoChooser;
 };

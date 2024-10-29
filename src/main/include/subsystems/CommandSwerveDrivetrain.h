@@ -237,7 +237,8 @@ public:
 private:
     void StartSimThread();
 
-    swerve::requests::ApplyChassisSpeeds m_AutoRequest{};
+    swerve::requests::ApplyChassisSpeeds m_AutoRequest = swerve::requests::ApplyChassisSpeeds{}
+        .WithDriveRequestType(swerve::SwerveModule::DriveRequestType::OpenLoopVoltage);
 };
 
 }

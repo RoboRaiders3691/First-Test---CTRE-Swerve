@@ -61,7 +61,7 @@ void CommandSwerveDrivetrain::ConfigurePathPlanner(){
         [this](){ return this->GetState().Pose; }, // Robot pose supplier
         [this](frc::Pose2d newPose){ this->SeedFieldRelative(newPose); }, // Method to reset odometry (will be called if your auto has a starting pose)
         [this](){ return this->ChassisSpeedsCTREToFrc(GetState().Speeds); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        [this](auto speeds){m_AutoRequest.WithSpeeds(ChassisSpeedsFrcToCTRE(speeds));}, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+        [this](auto speeds){this->SetControl(m_AutoRequest.WithSpeeds(ChassisSpeedsFrcToCTRE(speeds)));}, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
         std::make_shared<pathplanner::PPHolonomicDriveController>( // PPHolonomicController is the built in path following controller for holonomic drive trains
             pathplanner::PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             pathplanner::PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants

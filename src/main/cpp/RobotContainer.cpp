@@ -6,9 +6,22 @@
 
 #include <frc2/command/Commands.h>
 
-RobotContainer::RobotContainer()
+RobotContainer::RobotContainer() : PPautoVect(examplePPUtil.GetAutos())
 {
     ConfigureBindings();
+
+    //Add Options to the sendable chooser
+    //Default: No auto with value of int -1
+    autoChooser.SetDefaultOption("No Auto", -1);
+    
+    //For loop to add an option for each value in PPautoVect.
+    //The name is the auto command name and the value is i (the index of the auto)
+    for(int i = 0; i < int(PPautoVect.size()); i++){
+        autoChooser.AddOption(PPautoVect[i].GetName(), i);
+    }
+
+    frc::SmartDashboard::PutData("Auto Selector", &autoChooser);
+
 }
 
 void RobotContainer::ConfigureBindings()
@@ -46,8 +59,13 @@ void RobotContainer::ConfigureBindings()
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand(){
-    // This method loads the auto when it is called, however, it is recommended
-    // to first load your paths/autos when code starts, then return the
-    // pre-loaded auto/path
-    return pathplanner::PathPlannerAuto("Test Auto").ToPtr();
+    //Grab the selected autoChooser option
+    //If the value is -1 then do default(dont run an auto routine)
+    //Otherwise the value of the autoChooser is the PPautoVect index for the auto selected  
+    if(autoChooser.GetSelected() == -1){
+        return frc2::cmd::Print("No Auto Selected");
+    }
+    else{
+    return std::move(PPautoVect[autoChooser.GetSelected()]).ToPtr();
+    }
 }
